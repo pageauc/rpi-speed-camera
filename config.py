@@ -10,7 +10,7 @@
 
 # Calibration Settings
 # --------------------
-calibrate = True         # Create a calibration image file with calibration hash markers 10 px per mark
+CALIBRATE_ON = True         # Create a calibration image file with calibration hash markers 10 px per mark
 cal_obj_px_L2R = 90      # L2R Moving Objects, Length of a calibration object in pixels
 cal_obj_mm_L2R = 4700.0  # L2R Moving Objects, Length of the calibration object in millimetres
 cal_obj_px_R2L = 95      # R2L Moving Objects, Length of a calibration object in pixels
@@ -37,17 +37,17 @@ y_upper = 75           # Default= 75 Exclude event if y less that this value
 y_lower = 185          # Default= 185 Exclude event if y greater than this value
 
 # Display opencv windows on gui desktop
-# gui_window_on suppresses All Windows if False
+# GUI_WINDOW_ON suppresses All Windows if False
 # ----------------------------------------------
-gui_window_on = False  # True= Turn On All desktop GUI openCV windows. False=Don't Show (req'd for SSH) .
-show_thresh_on = False # Display desktop GUI openCV cropped threshold window. True=Show, False=Don't Show
-show_crop_on = False   # Same as show_thresh_on but in color. True=Show, False=Don't Show (Default)
+GUI_WINDOW_ON = False  # True= Turn On All desktop GUI openCV windows. False=Don't Show (req'd for SSH) .
+SHOW_THRESH_ON = False # Display desktop GUI openCV cropped threshold window. True=Show, False=Don't Show
+SHOW_CROP_ON = False   # Same as SHOW_THRESH_ON but in color. True=Show, False=Don't Show (Default)
 
 # Display and Log settings
 # ------------------------
-verbose = True         # True= Display basic status information on console False= Off
-display_fps = False    # True= Show average frame count every 1000 loops False= Off
-log_data_to_CSV = False # True= Save log data as CSV comma separated values  False= Off
+VERBOSE_ON = True         # True= Display basic status information on console False= Off
+DISPLAY_FPS = False    # True= Show average frame count every 1000 loops False= Off
+LOG_DATA_TO_CSV = False # True= Save log data as CSV comma separated values  False= Off
 LOG_TO_FILE = False  # True= Send logging to file False= No Logging to File
 LOG_FILE_PATH = 'speed-cam.log'  # Location of log file when logDataToFile=True
 
@@ -58,7 +58,7 @@ track_counter = 5      # one cpu core=5 four cores=10 Number of Consecutive Moti
                        # Testing with RPI2 B one core using opencv ver 3.4.2
 MIN_AREA = 100         # Default= 100 Exclude all contours less than or equal to this sq-px Area
 track_len_trig = 70    # NOT USED. Used for version 8.87 or earlier see speed-cam_887.py
-show_out_range = True  # Default= True Show Out of Range Events per x_diff settings below False= Off
+SHOW_OUT_RANGE = True  # Default= True Show Out of Range Events per x_diff settings below False= Off
 x_diff_max = 20        # Default= 20 Exclude if max px away >= last motion event x position
 x_diff_min = 1         # Default= 1 Exclude if min px away <= last event x position
 x_buf_adjust = 10      # Default= 10 Divides motion Rect x for L&R Buffer Space to Ensure contours are in
@@ -69,7 +69,7 @@ max_speed_over = 0     # Exclude track if Speed less than or equal to value spec
 
 # Camera Settings
 # ---------------
-WEBCAM = False         # Default = False False=PiCamera True=USB WebCamera
+WEBCAM_ON = False         # Default = False False=PiCamera True=USB WebCamera
 
 # Web Camera Settings
 WEBCAM_SRC = 0         # Default= 0   USB opencv connection number
@@ -95,28 +95,28 @@ image_prefix = "speed-"       # image name prefix
 image_format = ".jpg"         # Default = ".jpg"  image Formats .jpeg .png .gif .bmp
 image_show_motion_area = True # True= Display motion detection rectangle area on saved images
 image_filename_speed = False  # True= Prefix filename with speed value
-image_text_on = True          # True= Show Text on speed images   False= No Text on images
-image_text_bottom = True      # True= Show image text at bottom otherwise at top
+IMAGE_TEXT_ON = True          # True= Show Text on speed images   False= No Text on images
+IMAGE_TEXT_BOTTOM = True      # True= Show image text at bottom otherwise at top
 image_font_size = 12          # Default= 12 Font text height in px for text on images
 image_bigger = 3.0            # Default= 3.0 Resize saved speed image by specified multiplier value
 image_max_files = 0           # 0=off or specify MaxFiles to maintain then oldest are deleted  Default=0 (off)
 
 # Optional Manage SubDir Creation by time, number of files or both (not recommended)
 # ----------------------------------------------------------------
-imageSubDirMaxFiles = 1000    # 0=off or specify MaxFiles - Creates New dated sub-folder if MaxFiles exceeded
-imageSubDirMaxHours = 0       # 0=off or specify MaxHours - Creates New dated sub-folder if MaxHours exceeded
+IMAGE_SUBDIR_MAXFILES = 1000    # 0=off or specify MaxFiles - Creates New dated sub-folder if MaxFiles exceeded
+IMAGE_SUBDIR_MAXHOURS = 0       # 0=off or specify MaxHours - Creates New dated sub-folder if MaxHours exceeded
 
 # Optional Save Most Recent files in recent folder
 # ------------------------------------------------
-imageRecentMax = 100          # 0=off  Maintain specified number of most recent files in motionRecentDir
-imageRecentDir = "media/recent"  # Default= "media/recent"  save recent files directory path
+IMAGE_RECENT_MAX = 100          # 0=off  Maintain specified number of most recent files in motionRecentDir
+IMAGE_RECENT_DIR = "media/recent"  # Default= "media/recent"  save recent files directory path
 
 # Optional Manage Free Disk Space Settings
 # ----------------------------------------
-spaceTimerHrs = 0             # Default= 0  0=off or specify hours frequency to perform free disk space check
-spaceFreeMB = 500             # Default= 500  Target Free space in MB Required.
-spaceMediaDir = 'media/images'  # Default= 'media/images'  Starting point for directory walk
-spaceFileExt  = 'jpg'         # Default= 'jpg' File extension to Delete Oldest Files
+SPACE_TIMER_HRS = 0             # Default= 0  0=off or specify hours frequency to perform free disk space check
+SPACE_FREE_MB = 500             # Default= 500  Target Free space in MB Required.
+SPACE_MEDIA_DIR = 'media/images'  # Default= 'media/images'  Starting point for directory walk
+SPACE_FILE_EXT  = 'jpg'         # Default= 'jpg' File extension to Delete Oldest Files
 
 # OpenCV Motion Settings
 # ----------------------
@@ -124,7 +124,7 @@ SHOW_CIRCLE = False           # True=circle in center of motion, False=rectangle
 CIRCLE_SIZE = 5               # Default= 5 Diameter circle in px if SHOW_CIRCLE = True
 LINE_THICKNESS = 1            # Default= 1 Size of lines for circle or Rectangle
 FONT_SCALE = 0.5              # Default= 0.5 OpenCV window text font size scaling factor Default=.5 (lower is smaller)
-WINDOW_BIGGER = 1.0           # Default= 1.0 Resize multiplier for opencv window if gui_window_on=True
+WINDOW_BIGGER = 1.0           # Default= 1.0 Resize multiplier for opencv window if GUI_WINDOW_ON=True
 BLUR_SIZE = 10                # Default= 10 OpenCV setting for Gaussian difference image blur
 THRESHOLD_SENSITIVITY = 20    # Default= 20 OpenCV setting for difference image threshold
 
