@@ -43,7 +43,7 @@ Note to Self - Look at eliminating python variable camel case and use all snake 
 """
 from __future__ import print_function
 import os
-PROG_VER = "9.91"  # current version of this python script
+PROG_VER = "9.92"  # current version of this python script
 # Get information about this script including name, launch path, etc.
 # This allows script to be renamed or relocated to another directory
 MY_PATH = os.path.abspath(__file__)  # Find the full path of this python script
@@ -88,7 +88,6 @@ DEFAULT_SETTINGS = {
     'y_upper':75,
     'y_lower':185,
     'GUI_WINDOW_ON':False,
-    'SHOW_THRESH_ON':False,
     'SHOW_CROP_ON':False,
     'VERBOSE_ON':True,
     'DISPLAY_FPS':False,
@@ -374,6 +373,8 @@ else:
 
 # setup buffer area to ensure contour is mostly contained in crop area
 X_BUF = int((x_right - x_left) / x_buf_adjust)
+# Conversion from MB to Bytes
+MB_2_BYTES = 1048576
 
 #------------------------------------------------------------------------------
 class PiVideoStream:
@@ -843,8 +844,7 @@ def free_space_upto(free_mb, media_dir, extension=image_format):
     """
     media_dir_path = os.path.abspath(media_dir)
     if os.path.isdir(media_dir_path):
-        MB2BYTES = 1048576  # Conversion from MB to Bytes
-        target_freebytes = free_mb * MB2BYTES
+        target_freebytes = free_mb * MB_2_BYTES
         file_list = files_to_delete(media_dir, extension)
         total_files = len(file_list)
         delcnt = 0
@@ -864,8 +864,8 @@ def free_space_upto(free_mb, media_dir, extension=image_format):
                 delcnt += 1
                 logging.info('Del %s', file_path)
                 logging.info('Target=%i MB  Avail=%i MB  Deleted %i of %i Files ',
-                             target_freebytes / MB2BYTES,
-                             avail_freebytes / MB2BYTES,
+                             target_freebytes / MB_2_BYTES,
+                             avail_freebytes / MB_2_BYTES,
                              delcnt, total_files)
                 # Avoid deleting more than 1/4 of files at one time
                 if delcnt > total_files / 4:
@@ -1010,7 +1010,7 @@ def db_open(db_file):
     return db_conn
 
 #------------------------------------------------------------------------------
-def speed_get_contours(image, grayimage1):
+def get_speed_contours(image, grayimage1):
     """ Read stream image and process for motion contours"""
     image_ok = False
     while not image_ok:
@@ -1025,13 +1025,12 @@ def speed_get_contours(image, grayimage1):
     # Convert to gray scale, which is easier
     grayimage2 = cv2.cvtColor(image_crop, cv2.COLOR_BGR2GRAY)
     # Get differences between the two greyed images
-    global difference_image
-    difference_image = cv2.absdiff(grayimage1, grayimage2)
+    diff_image = cv2.absdiff(grayimage1, grayimage2)
     # Blur difference image to enhance motion vectors
-    difference_image = cv2.blur(difference_image, (BLUR_SIZE, BLUR_SIZE))
+    diff_image = cv2.blur(diff_image, (BLUR_SIZE, BLUR_SIZE))
     # Get threshold of blurred difference image
     # based on THRESHOLD_SENSITIVITY variable
-    retval, thresholdimage = cv2.threshold(difference_image,
+    retval, thresholdimage = cv2.threshold(diff_image,
                                            THRESHOLD_SENSITIVITY,
                                            255, cv2.THRESH_BINARY)
     try:
@@ -1148,7 +1147,7 @@ def speed_camera():
     still_scanning = True
     while still_scanning:  # process camera thread images and calculate speed
         image2 = vs.read() # Read image data from video steam thread instance
-        grayimage1, contours = speed_get_contours(image2, grayimage1)
+        grayimage1, contours = get_speed_contours(image2, grayimage1)
         # if contours found, find the one with biggest area
         if contours:
             total_contours = len(contours)
@@ -1512,12 +1511,10 @@ def speed_camera():
                                        int(y_upper + track_y + track_h)),
                                       CV_GREEN, LINE_THICKNESS)
         if GUI_WINDOW_ON:
-            # cv2.imshow('Difference Image',difference image)
+            # cv2.imshow('Difference Image',difference_image)
             image2 = speed_image_add_lines(image2, CV_RED)
             image_view = cv2.resize(image2, (IMAGE_WIDTH, IMAGE_HEIGHT))
             cv2.imshow('Movement (q Quits)', image_view)
-            if SHOW_THRESH_ON:
-                cv2.imshow('Threshold', difference_image)
             if SHOW_CROP_ON:
                 cv2.imshow('Crop Area', image_crop)
             # Close Window if q pressed

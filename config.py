@@ -1,5 +1,5 @@
 # ---------------- User Configuration Settings for speed-cam.py ---------------------------------
-#         Ver 9.5 speed-cam.py Variable Configuration Settings
+#         Ver 9.92 speed-cam.py Variable Configuration Settings
 
 #######################################
 #  speed-cam.py Variable Settings
@@ -40,7 +40,6 @@ y_lower = 185          # Default= 185 Exclude event if y greater than this value
 # GUI_WINDOW_ON suppresses All Windows if False
 # ----------------------------------------------
 GUI_WINDOW_ON = False  # True= Turn On All desktop GUI openCV windows. False=Don't Show (req'd for SSH) .
-SHOW_THRESH_ON = False # Display desktop GUI openCV cropped threshold window. True=Show, False=Don't Show
 SHOW_CROP_ON = False   # Same as SHOW_THRESH_ON but in color. True=Show, False=Don't Show (Default)
 
 # Display and Log settings
@@ -57,7 +56,6 @@ SPEED_MPH = False      # Set Speed Units   kph=False  mph=True
 track_counter = 5      # one cpu core=5 four cores=10 Number of Consecutive Motion Events to trigger speed photo
                        # Testing with RPI2 B one core using opencv ver 3.4.2
 MIN_AREA = 100         # Default= 100 Exclude all contours less than or equal to this sq-px Area
-track_len_trig = 70    # NOT USED. Used for version 8.87 or earlier see speed-cam_887.py
 SHOW_OUT_RANGE = True  # Default= True Show Out of Range Events per x_diff settings below False= Off
 x_diff_max = 20        # Default= 20 Exclude if max px away >= last motion event x position
 x_diff_min = 1         # Default= 1 Exclude if min px away <= last event x position
