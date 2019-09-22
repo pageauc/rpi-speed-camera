@@ -83,8 +83,8 @@ default_settings = {
     'cal_obj_mm_L2R':4700.0,
     'cal_obj_px_R2L':95,
     'cal_obj_mm_R2L':4700.0,
-    'pluginEnable':False,
-    'pluginName':"picam240",
+    'PLUGIN_ENABLE':False,
+    'PLUGIN_NAME':"picam240",
     'x_left ':25,
     'x_right':295,
     'y_upper':75,
@@ -95,8 +95,8 @@ default_settings = {
     'verbose':True,
     'display_fps':False,
     'log_data_to_CSV':False,
-    'loggingToFile':False,
-    'logFilePath':'speed-cam.log',
+    'LOG_TO_FILE':False,
+    'LOG_FILE_PATH':'speed-cam.log',
     'SPEED_MPH':False,
     'track_counter':5,
     'MIN_AREA':100,
@@ -171,7 +171,7 @@ cvRed = (0, 0, 255)
 
 """
 Check for config.py variable file to import and warn if not Found.
-Logging is not used since the logFilePath variable is needed before
+Logging is not used since the LOG_FILE_PATH variable is needed before
 setting up logging
 """
 configFilePath = os.path.join(baseDir, "config.py")
@@ -196,12 +196,12 @@ for key, val in default_settings.items():
         print('WARN  : config.py Variable Not Found. Setting ' + key + ' = ' + str(val))
         exec(key + '=val')
 
-# Now that variables are imported from config.py Setup Logging since we have logFilePath
-if loggingToFile:
+# Now that variables are imported from config.py Setup Logging since we have LOG_FILE_PATH
+if LOG_TO_FILE:
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)-8s %(funcName)-10s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        filename=logFilePath,
+                        filename=LOG_FILE_PATH,
                         filemode='w')
 elif verbose:
     logging.basicConfig(level=logging.DEBUG,
@@ -227,14 +227,14 @@ except ImportError:
     logging.warn("Problem importing search_dest_path variable")
     logging.info("Setting default value search_dest_path = %s", search_dest_path)
 
-# Import Settings from specified plugin if pluginEnable=True
-if pluginEnable:     # Check and verify plugin and load variable overlay
+# Import Settings from specified plugin if PLUGIN_ENABLE=True
+if PLUGIN_ENABLE:     # Check and verify plugin and load variable overlay
     pluginDir = os.path.join(baseDir, "plugins")
-    # Check if there is a .py at the end of pluginName variable
-    if pluginName.endswith('.py'):
-        pluginName = pluginName[:-3]    # Remove .py extensiion
-    pluginPath = os.path.join(pluginDir, pluginName + '.py')
-    logging.info("pluginEnabled - loading pluginName %s", pluginPath)
+    # Check if there is a .py at the end of PLUGIN_NAME variable
+    if PLUGIN_NAME.endswith('.py'):
+        PLUGIN_NAME = PLUGIN_NAME[:-3]    # Remove .py extensiion
+    pluginPath = os.path.join(pluginDir, PLUGIN_NAME + '.py')
+    logging.info("PLUGIN_ENABLEd - loading PLUGIN_NAME %s", pluginPath)
     if not os.path.isdir(pluginDir):
         logging.error("plugin Directory Not Found at %s", pluginDir)
         logging.info("Rerun github curl install script to install plugins")
@@ -243,8 +243,8 @@ if pluginEnable:     # Check and verify plugin and load variable overlay
         logging.warn("%s %s Exiting Due to Error", progName, progVer)
         sys.exit(1)
     elif not os.path.exists(pluginPath):
-        logging.error("File Not Found pluginName %s", pluginPath)
-        logging.info("Check Spelling of pluginName Value in %s", configFilePath)
+        logging.error("File Not Found PLUGIN_NAME %s", pluginPath)
+        logging.info("Check Spelling of PLUGIN_NAME Value in %s", configFilePath)
         logging.info("------- Valid Names -------")
         validPlugin = glob.glob(pluginDir + "/*py")
         validPlugin.sort()
@@ -254,7 +254,7 @@ if pluginEnable:     # Check and verify plugin and load variable overlay
             if not ((plugin == "__init__") or (plugin == "current")):
                 logging.info("        %s", plugin)
         logging.info("------- End of List -------")
-        logging.info("        Note: pluginName Should Not have .py Ending.")
+        logging.info("        Note: PLUGIN_NAME Should Not have .py Ending.")
         logging.info("or Rerun github curl install command.  See github wiki")
         logging.info("https://github.com/pageauc/speed-camera/wiki/")
         logging.info("How-to-Install-or-Upgrade#quick-install")
@@ -557,20 +557,20 @@ def show_settings():
         print("Debug Messages .. verbose=%s  display_fps=%s calibrate=%s"
               % (verbose, display_fps, calibrate))
         print("                  show_out_range=%s" % show_out_range)
-        print("Plugins ......... pluginEnable=%s  pluginName=%s"
-              % (pluginEnable, pluginName))
+        print("Plugins ......... PLUGIN_ENABLE=%s  PLUGIN_NAME=%s"
+              % (PLUGIN_ENABLE, PLUGIN_NAME))
         print("Calibration ..... cal_obj_px_L2R=%i px  cal_obj_mm_L2R=%i mm  speed_conv_L2R=%.5f"
               % (cal_obj_px_L2R, cal_obj_mm_L2R, speed_conv_L2R))
         print("                  cal_obj_px_R2L=%i px  cal_obj_mm_R2L=%i mm  speed_conv_R2L=%.5f"
               % (cal_obj_px_R2L, cal_obj_mm_R2L, speed_conv_R2L))
-        if pluginEnable:
+        if PLUGIN_ENABLE:
             print("                  (Change Settings in %s)" % pluginPath)
         else:
             print("                  (Change Settings in %s)" % configFilePath)
         print("Logging ......... Log_data_to_CSV=%s  log_filename=%s.csv (CSV format)"
               % (log_data_to_CSV, baseFileName))
-        print("                  loggingToFile=%s  logFilePath=%s"
-              % (loggingToFile, logFilePath))
+        print("                  LOG_TO_FILE=%s  LOG_FILE_PATH=%s"
+              % (LOG_TO_FILE, LOG_FILE_PATH))
         print("                  SQLITE3 DB_PATH=%s  DB_TABLE=%s"
               % (DB_PATH, DB_TABLE))
         print("Speed Trigger ... Log only if max_speed_over > %i %s"
@@ -668,7 +668,7 @@ def take_calibration_image(speed, filename, cal_image):
           (speed, speed_units))
     print("Repeat Calibration with same object moving R2L and update config.py R2L variables")
     print("cal_obj_mm_R2L and cal_obj_px_R2L accordingly")
-    if pluginEnable:
+    if PLUGIN_ENABLE:
         print("  4 - Edit %s File and Change Values for Above Variables." %
               pluginPath)
     else:
@@ -1071,14 +1071,14 @@ def speed_image_add_lines(image, color):
 
 #------------------------------------------------------------------------------
 def speed_notify():
-    if pluginEnable:
-        logging.info("Plugin Enabled per pluginName=%s", pluginName)
+    if PLUGIN_ENABLE:
+        logging.info("Plugin Enabled per PLUGIN_NAME=%s", PLUGIN_NAME)
     else:
-        logging.info("Plugin Disabled per pluginEnable=%s", pluginEnable)
+        logging.info("Plugin Disabled per PLUGIN_ENABLE=%s", PLUGIN_ENABLE)
 
     if verbose:
-        if loggingToFile:
-            print("Logging to File %s (Console Messages Disabled)" % logFilePath)
+        if LOG_TO_FILE:
+            print("Logging to File %s (Console Messages Disabled)" % LOG_FILE_PATH)
         else:
             logging.info("Logging to Console per Variable verbose=True")
 
@@ -1339,8 +1339,8 @@ def speed_camera():
                                         camera = "WebCam"
                                     else:
                                         camera = "PiCam"
-                                    if pluginEnable:
-                                        plugin_name = pluginName
+                                    if PLUGIN_ENABLE:
+                                        plugin_name = PLUGIN_NAME
                                     else:
                                         plugin_name = "None"
                                     # create the speed data list ready for db insert

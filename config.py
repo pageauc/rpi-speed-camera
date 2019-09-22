@@ -21,8 +21,8 @@ cal_obj_mm_R2L = 4700.0  # R2L Moving Objects, Length of the calibration object 
 
 # Plugins overlay the config.py variable settings
 # -----------------------------------------------
-pluginEnable = False
-pluginName = "picam240" # Specify filename in plugins subfolder without .py extension per below
+PLUGIN_ENABLE = False
+PLUGIN_NAME = "picam240" # Specify filename in plugins subfolder without .py extension per below
                         # picam240, webcam240 (Recommended for RPI2 or greater)
                         # picam480, webcam480, picam720, webcam720  (can use RPI3 but Test)
                         # picam1080   (Experimental Not Recommended)
@@ -48,8 +48,8 @@ show_crop_on = False   # Same as show_thresh_on but in color. True=Show, False=D
 verbose = True         # True= Display basic status information on console False= Off
 display_fps = False    # True= Show average frame count every 1000 loops False= Off
 log_data_to_CSV = False # True= Save log data as CSV comma separated values  False= Off
-loggingToFile = False  # True= Send logging to file False= No Logging to File
-logFilePath = 'speed-cam.log'  # Location of log file when logDataToFile=True
+LOG_TO_FILE = False  # True= Send logging to file False= No Logging to File
+LOG_FILE_PATH = 'speed-cam.log'  # Location of log file when logDataToFile=True
 
 # Motion Event Settings
 # ---------------------
