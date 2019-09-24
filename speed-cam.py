@@ -43,7 +43,11 @@ Note to Self - Look at eliminating python variable camel case and use all snake 
 """
 from __future__ import print_function
 import os
+<<<<<<< Updated upstream
 PROG_VER = "9.92"  # current version of this python script
+=======
+PROG_VER = "9.91"  # current version of this python script
+>>>>>>> Stashed changes
 # Get information about this script including name, launch path, etc.
 # This allows script to be renamed or relocated to another directory
 MY_PATH = os.path.abspath(__file__)  # Find the full path of this python script
@@ -1120,6 +1124,11 @@ def speed_camera():
             logging.info("sqlite3 DB is Open %s", DB_PATH)
             db_cur = db_conn.cursor()  # Set cursor position
             db_is_open = True
+    try:
+        db_conn.execute('alter table speed add status text')
+    except sqlite3.OperationalError:
+        pass
+
     speed_notify()
     # Warn user of performance hit if webcam image flipped
     if (WEBCAM_ON and WEBCAM_FLIPPED):
@@ -1348,7 +1357,7 @@ def speed_camera():
                                                   y_upper, y_lower,
                                                   max_speed_over,
                                                   MIN_AREA, track_counter,
-                                                  cal_obj_px, cal_obj_mm)
+                                                  cal_obj_px, cal_obj_mm, '')
 
                                     # Insert speed_data into sqlite3 database table
                                     try:
